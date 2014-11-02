@@ -4,9 +4,6 @@
 ## SCRIPT VARIABLES
 ########################################
 
-## Set path to transmission-daemon binary
-TRANSMISSION="$(which transmission-daemon)"
-
 ## Set path to config dir
 CONFIG_DIR="/etc/transmission-daemon"
 
@@ -47,5 +44,8 @@ fi
 ## SCRIPT ACTIONS
 ########################################
 
+## Update the blocklist
+transmission-remote -n ${RPC_USER}:${RPC_PASS} --blocklist-update
+
 ## Run transmission-daemon
-${TRANSMISSION} --foreground --log-info --no-portmap --config-dir ${CONFIG_DIR} || exit 1
+transmission-daemon --foreground --log-info --no-portmap --config-dir ${CONFIG_DIR} || exit 1
