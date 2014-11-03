@@ -6,7 +6,7 @@ Docker container for Transmission Daemon.
 
 ### Running the container
 
-    docker run -d -p 9091:9091 -p 51413:51413/udp -e RPC_USER=transmission -e RPC_PASS=password -v /local/dir:/srv/downloads --name Transmission phlak/transmission
+    docker run -d -p 9091:9091 -p 51413:51413/udp -e RPC_USER=transmission -e RPC_PASS=password -v /local/dir:/srv/downloads -v /var/lib/transmission-daemon/info --name Transmission phlak/transmission
 
 
 -----

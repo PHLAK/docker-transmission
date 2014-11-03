@@ -5,10 +5,10 @@
 ########################################
 
 ## Set path to config dir
-CONFIG_DIR="/etc/transmission-daemon"
+CONFIG_DIR="/var/lib/transmission-daemon/info"
 
 ## Set path to settings file
-SETTINGS="${CONFIG_DIR}/settings.json"
+SETTINGS="/etc/transmission-daemon/settings.json"
 
 ## Set path to blocklist directory
 BLOCKLIST_DIR="${CONFIG_DIR}/blocklists"
