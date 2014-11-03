@@ -10,6 +10,8 @@ RUN apt-get update && apt-get -y upgrade \
 RUN apt-add-repository -y ppa:transmissionbt/ppa \
     && apt-get update && apt-get -y install transmission-daemon
 
+RUN echo "fs.inotify.max_user_watches = 200000" > /etc/sysctl.d/60-max-file-watches.conf
+
 ADD files/settings.json /etc/transmission-daemon/settings.json
 
 ADD files/run.sh /run.sh
