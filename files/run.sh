@@ -10,6 +10,12 @@ CONFIG_DIR="/etc/transmission-daemon"
 ## Set path to settings file
 SETTINGS="${CONFIG_DIR}/settings.json"
 
+## Set path to blocklist directory
+BLOCKLIST_DIR="${CONFIG_DIR}/blocklists"
+
+## Set blocklist URL
+BLOCKLIST_URL="http://list.iblocklist.com/?list=bt_level1&fileformat=p2p&archiveformat=gz"
+
 
 ## PRE-RUN CONFIGURATION
 ########################################
@@ -44,8 +50,13 @@ fi
 ## SCRIPT ACTIONS
 ########################################
 
-## Update the blocklist
-transmission-remote -n ${RPC_USER}:${RPC_PASS} --blocklist-update
+## Create the blocklist directory
+if [[ ! -d "${BLOCKLIST_DIR}" ]]; then
+    mkdir --verbose --parents ${BLOCKLIST_DIR}
+fi
+
+## Download updated blocklist
+wget -qO- "${BLOCKLIST_URL}" | gunzip > ${BLOCKLIST_DIR}/bt_level1
 
 ## Run transmission-daemon
-transmission-daemon --foreground --log-info --no-portmap --config-dir ${CONFIG_DIR} || exit 1
+transmission-daemon --foreground --log-info --config-dir ${CONFIG_DIR} || exit 1

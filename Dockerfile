@@ -5,7 +5,7 @@ MAINTAINER Chris Kankiewicz <Chris@ChrisKankiewicz.com>
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get -y upgrade \
-    && apt-get -y install software-properties-common
+    && apt-get -y install software-properties-common wget
 
 RUN apt-add-repository -y ppa:transmissionbt/ppa \
     && apt-get update && apt-get -y install transmission-daemon
