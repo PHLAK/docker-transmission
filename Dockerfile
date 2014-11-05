@@ -16,7 +16,7 @@ RUN apt-add-repository -y ppa:transmissionbt/ppa \
 ADD files/settings.json /etc/transmission-daemon/settings.json
 
 ## Add bolcklist-update cronjob
-ADD files/blocklist-update /etc/cron.daily/google-talkplugin/blocklist-update
+ADD files/blocklist-update /etc/cron.daily/blocklist-update
 
 ## Increase max file watches
 RUN echo "fs.inotify.max_user_watches = 200000" > /etc/sysctl.d/60-max-file-watches.conf
