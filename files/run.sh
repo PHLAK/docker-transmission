@@ -56,7 +56,9 @@ if [[ ! -d "${BLOCKLIST_DIR}" ]]; then
 fi
 
 ## Download updated blocklist
-wget -qO- "${BLOCKLIST_URL}" | gunzip > ${BLOCKLIST_DIR}/bt_level1
+if [[ ! -e "${BLOCKLIST_DIR}/bt_level1.bin" ]]; then
+    wget -qO- "${BLOCKLIST_URL}" | gunzip > ${BLOCKLIST_DIR}/bt_level1
+fi
 
 ## Run transmission-daemon
 transmission-daemon --foreground --log-info --config-dir ${CONFIG_DIR} || exit 1
