@@ -1,18 +1,15 @@
 FROM ubuntu:14.04
 MAINTAINER Chris Kankiewicz <Chris@ChrisKankiewicz.com>
 
-## Enable noninteractive mode
-ENV DEBIAN_FRONTEND noninteractive
-
 ## Apt update and install dependencies
 RUN apt-get update && apt-get -y upgrade \
     && apt-get -y install software-properties-common wget
 
-## Add transmission-daemon PPA
+## Add transmission-daemon PPA and install
 RUN apt-add-repository -y ppa:transmissionbt/ppa \
     && apt-get update && apt-get -y install transmission-daemon
 
-## Add transmission settings file
+## Add transmission-daemon settings file
 ADD files/settings.json /etc/transmission-daemon/settings.json
 
 ## Add bolcklist-update cronjob
