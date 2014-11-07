@@ -17,17 +17,17 @@ ADD files/blocklist-update /etc/cron.daily/blocklist-update
 RUN chmod +x /etc/cron.daily/blocklist-update
 
 ## Increase max file watches
-RUN echo "fs.inotify.max_user_watches = 200000" > /etc/sysctl.d/60-max-file-watches.conf
+ADD files/60-max-file-watches.conf /etc/sysctl.d/60-max-file-watches.conf
 
-## Add docker volumes
-VOLUME /srv/downloads /var/lib/transmission-daemon/info
+## Perform apt cleanup
+RUN apt-get -y autoremove && apt-get -y clean && apt-get -y autoclean
 
 ## Add and chmod the run file
 ADD files/run.sh /run.sh
 RUN chmod +x /run.sh
 
-## Perform apt cleanup
-RUN apt-get -y autoremove && apt-get -y clean && apt-get -y autoclean
+## Add docker volumes
+VOLUME /srv/downloads /var/lib/transmission-daemon/info
 
 ## Expose ports
 EXPOSE 9091 51413
