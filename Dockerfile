@@ -1,9 +1,10 @@
 FROM ubuntu:14.04
 MAINTAINER Chris Kankiewicz <Chris@ChrisKankiewicz.com>
 
-## Apt update and install dependencies
+## Upgrade packages and install dependencies
 RUN apt-get update && apt-get -y upgrade \
-    && apt-get -y install software-properties-common wget
+    && apt-get -y install software-properties-common wget \
+    && rm -rf /var/lib/apt/lists/*
 
 ## Add transmission-daemon PPA and install
 RUN apt-add-repository -y ppa:transmissionbt/ppa \
@@ -18,9 +19,6 @@ RUN chmod +x /etc/cron.daily/blocklist-update
 
 ## Increase max file watches
 ADD files/60-max-file-watches.conf /etc/sysctl.d/60-max-file-watches.conf
-
-## Perform apt cleanup
-RUN apt-get -y autoremove && apt-get -y clean && apt-get -y autoclean
 
 ## Add and chmod the run file
 ADD files/run.sh /run.sh

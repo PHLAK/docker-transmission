@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o errexit -o pipefail
 
 
 ## SCRIPT VARIABLES
@@ -29,7 +30,7 @@ if [[ ! -z "$(grep '{{RPC_USER}}' ${SETTINGS})" ]]; then
     fi
 
     ## Set rpc-user value
-    sed -i -e "s/{{RPC_USER}}/${RPC_USER}/" ${SETTINGS} || exit 1
+    sed -i -e "s/{{RPC_USER}}/${RPC_USER}/" ${SETTINGS}
 
 fi
 
@@ -42,7 +43,7 @@ if [[ ! -z "$(grep '{{RPC_PASS}}' ${SETTINGS})" ]]; then
     fi
 
     ## Set rpc-password value
-    sed -i -e "s/{{RPC_PASS}}/${RPC_PASS}/" ${SETTINGS} || exit 1
+    sed -i -e "s/{{RPC_PASS}}/${RPC_PASS}/" ${SETTINGS}
 
 fi
 
@@ -61,4 +62,4 @@ if [[ ! -e "${BLOCKLIST_DIR}/bt_level1.bin" ]]; then
 fi
 
 ## Run transmission-daemon
-transmission-daemon --foreground --log-info --config-dir ${CONFIG_DIR} || exit 1
+transmission-daemon --foreground --log-info --config-dir ${CONFIG_DIR}
