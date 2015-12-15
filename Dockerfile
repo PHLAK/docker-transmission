@@ -1,34 +1,42 @@
-FROM ubuntu:14.04
+FROM alpine:3.2
 MAINTAINER Chris Kankiewicz <Chris@ChrisKankiewicz.com>
 
-## Upgrade packages and install dependencies
-RUN apt-get update && apt-get -y upgrade \
-    && apt-get -y install software-properties-common wget \
-    && rm -rf /var/lib/apt/lists/*
+# Create config directories
+ENV CONFIG_DIR    /srv/transmission-daemon
+ENV BLOCKLIST_DIR ${CONFIG_DIR}/blocklists
+RUN mkdir -pv ${CONFIG_DIR} && mkdir -pv ${BLOCKLIST_DIR}
 
-## Add transmission-daemon PPA and install
-RUN apt-add-repository -y ppa:transmissionbt/ppa \
-    && apt-get update && apt-get -y install transmission-daemon
+# Set download and watch directories
+ENV DOWNLOAD_DIR   /srv/downloads
+ENV INCOMPLETE_DIR ${DOWNLOAD_DIR}/.incomplete
+ENV WATCH_DIR      /srv/watchdir
 
-## Add transmission-daemon settings file
-ADD files/settings.json /etc/transmission-daemon/settings.json
+# Add transmission-daemon settings file
+COPY files/settings.json ${CONFIG_DIR}/settings.json
 
-## Add bolcklist-update cronjob
-ADD files/blocklist-update /etc/cron.daily/blocklist-update
-RUN chmod +x /etc/cron.daily/blocklist-update
+# Set RPC variables
+ENV RPC_USER transmission
+ENV RPC_PASS transmission
 
-## Increase max file watches
-ADD files/60-max-file-watches.conf /etc/sysctl.d/60-max-file-watches.conf
+# Install packages and dependencies
+RUN apk add --update transmission-cli transmission-daemon wget \
+    && rm -rf /var/cache/apk/*
 
-## Add and chmod the run file
-ADD files/run.sh /run.sh
-RUN chmod +x /run.sh
+# Install initial blocklist
+ENV BLOCKLIST_URL http://list.iblocklist.com/?list=bt_level1&fileformat=p2p&archiveformat=gz
+RUN wget -qO- "${BLOCKLIST_URL}" | gunzip > ${BLOCKLIST_DIR}/bt_level1
 
-## Add docker volumes
-VOLUME /srv/downloads /var/lib/transmission-daemon/info
+# Create bolcklist-update cronjob
+COPY files/blocklist-update /etc/periodic/hourly/blocklist-update
+RUN chmod +x /etc/periodic/hourly/blocklist-update
 
-## Expose ports
+# Add docker volumes
+VOLUME ${DOWNLOAD_DIR} ${WATCH_DIR}
+
+# Expose ports
 EXPOSE 9091 51413
 
-## Default command
-CMD ["/run.sh"]
+# Run transmission-daemon as default command
+CMD transmission-daemon --foreground --log-info --config-dir ${CONFIG_DIR} --lpd \
+    --download-dir ${DOWNLOAD_DIR} --incomplete-dir ${INCOMPLETE_DIR} --watch-dir ${WATCH_DIR} \
+    --auth --username ${RPC_USER} --password ${RPC_PASS}
