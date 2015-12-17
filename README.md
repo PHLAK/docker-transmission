@@ -6,13 +6,9 @@ Docker container for Transmission Daemon.
 
 ### Running the container
 
-    docker run -d -p 9091:9091 -p 51413:51413/udp -v /local/downloads:/srv/downloads --name transmission phlak/transmission
+    docker run -d -e RPC_USER=username -e RPC_PASS=password -p 9091:9091 -p 51413:51413/udp -v /local/downloads:/srv/downloads --name transmission phlak/transmission
 
-**Optional Arguments:**
-
-`-e RPC_USER=username` - Set the web interface username (Default: transmission)
-
-`-e RPC_PASS=password` - Set the web interfact password (Default: transmission)
+##### Optional Arguments
 
 `-v /local/watchdir:/srv/watchdir` - Map a directory (i.e. /local/watchdir) on the host OS that
                                      Transmission will monitor for .torrent files
