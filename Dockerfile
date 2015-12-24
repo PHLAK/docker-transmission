@@ -1,10 +1,10 @@
-FROM alpine:3.2
+FROM alpine:3.3
 MAINTAINER Chris Kankiewicz <Chris@ChrisKankiewicz.com>
 
 # Create config directories
 ENV CONFIG_DIR    /srv/transmission-daemon
 ENV BLOCKLIST_DIR ${CONFIG_DIR}/blocklists
-RUN mkdir -pv ${CONFIG_DIR} && mkdir -pv ${BLOCKLIST_DIR}
+RUN mkdir -pv ${CONFIG_DIR} ${BLOCKLIST_DIR}
 
 # Set download and watch directories
 ENV DOWNLOAD_DIR   /srv/downloads

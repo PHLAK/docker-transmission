@@ -11,4 +11,4 @@ SCRIPT_DIR="$(dirname $(readlink -f ${0}))"
 docker build --force-rm --pull --tag ${IMAGE_NAME}:local ${SCRIPT_DIR}
 
 # Notify user of success
-echo "Sucessfully created image: ${IMAGE_NAME}:${TAG}"
+echo "Sucessfully created image: ${IMAGE_NAME}:local"

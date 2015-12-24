@@ -3,15 +3,22 @@ docker-transmission
 
 Docker container for Transmission Daemon.
 
+[![](https://badge.imagelayers.io/phlak/transmission:latest.svg)](https://imagelayers.io/?images=phlak/transmission:latest 'Get your own badge on imagelayers.io')
+
 
 ### Running the container
 
-    docker run -d -e RPC_USER=username -e RPC_PASS=password -p 9091:9091 -p 51413:51413/udp -v /local/downloads:/srv/downloads --name transmission phlak/transmission
+    docker run -d -e RPC_USER=[USERNAME] -e RPC_PASS=[PASSWORD] -p 9091:9091 -p 51413:51413/udp -v /local/downloads:/srv/downloads --name transmission phlak/transmission
+
+**NOTE:** Replace `[USERNAME]` and `[PASSWORD]` with the username and password you'd like to set for
+accessing the web interface. Default username/password is `transmission`/`transmission`.
+
 
 ##### Optional Arguments
 
 `-v /local/watchdir:/srv/watchdir` - Map a directory (i.e. /local/watchdir) on the host OS that
                                      Transmission will monitor for .torrent files
+
 
 -----
 
