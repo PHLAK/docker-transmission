@@ -31,7 +31,7 @@ COPY files/blocklist-update /etc/periodic/hourly/blocklist-update
 RUN chmod +x /etc/periodic/hourly/blocklist-update
 
 # Add docker volumes
-VOLUME ${DOWNLOAD_DIR} ${WATCH_DIR}
+VOLUME ${CONFIG_DIR}
 
 # Expose ports
 EXPOSE 9091 51413

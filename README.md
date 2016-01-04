@@ -5,33 +5,53 @@ Docker container for Transmission Daemon.
 
 [![](https://badge.imagelayers.io/phlak/transmission:latest.svg)](https://imagelayers.io/?images=phlak/transmission:latest 'Get your own badge on imagelayers.io')
 
-
 ### Running the container
 
-    docker run -d -e RPC_USER=[USERNAME] -e RPC_PASS=[PASSWORD] -p 9091:9091 -p 51413:51413/udp -v /local/downloads:/srv/downloads --name transmission-daemon phlak/transmission
+    docker run -d -v /local/downloads:/srv/downloads -p 9091:9091 -p 51413:51413/udp --name transmission-daemon phlak/transmission
 
-**NOTE:** Replace `[USERNAME]` and `[PASSWORD]` with the username and password you'd like to set for
-accessing the web interface. Default username/password is `transmission`/`transmission`.
-
-
-##### Optional Arguments
-
-`-v /local/watchdir:/srv/watchdir` - Map a directory (i.e. /local/watchdir) on the host OS that
-                                     Transmission will monitor for .torrent files
+**NOTE:** The default RPC web interface username/password is `transmission`/`transmission`, however
+this can be overridden with optional environment variabe arguments (see below).
 
 
-### Running the container over an OpenVPN connection
+### [RECOMMENDED] Running with a data-only container
 
-Create an OpenVPN client configuration file named `openvpn.conf` in a directory anywhere on your
-host system. You should also place your client certs/keys in this directory. Then run the OpenVPN
-container and map your local OpenVPN directory to the container volume:
+In order to persist configuration data after deleting a container you may create a data-only
+container before running the container.
+
+    docker create --name transmission-data phlak/transmission echo "Data-only container for transmission-daemon"
+
+After the data-only container has been created run the Transmission Daemon container with mounted
+volumes from the data-only container:
+
+    docker run -d -v /local/downloads:/srv/downloads -p 9091:9091 -p 51413:51413/udp --volumes-from transmission-data --name transmission-daemon phlak/transmission
+
+
+### [ADVANCED] Running the container over an OpenVPN tunnel
+
+Place your OpenVPN client configuration file in a directory anywhere on your host system with the
+name `openvpn.conf`. You should also place your client certs/keys in this directory. Then run the
+OpenVPN container and map your local OpenVPN directory to the container volume:
 
     docker run -d -v /local/dir:/etc/openvpn -p 9091:9091 --privileged --restart=always --name tranmission-vpn phlak/openvpn
 
 Once your OpenVPN container is running, start the Transmission Daemon container with a shared
 network stack:
 
-    docker run -d -e RPC_USER=[USERNAME] -e RPC_PASS=[PASSWORD] -v /local/downloads:/srv/downloads --net container:tranmission-vpn --name transmission-daemon phlak/transmission
+    docker run -d -v /local/downloads:/srv/downloads --net container:tranmission-vpn --name transmission-daemon phlak/transmission
+
+**NOTE:** You can (should) combine this method with the data-only container method above. Just
+create the data-only contaner first and be sure to run the daemon container with the
+`--volumes-from` parameter as above.
+
+
+##### Optional Arguments
+
+`-e RPC_USER=[USERNAME]` - Set the RPC web interface username (Default: transmission)
+
+`-e RPC_PASS=[PASSWORD]` - Set the RPC web interface password (Default: transmission)
+
+`-v /local/watchdir:/srv/watchdir` - Map a directory (i.e. /local/watchdir) on the host OS that
+                                     Transmission will monitor for .torrent files
 
 
 -----
