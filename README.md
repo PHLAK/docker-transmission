@@ -8,7 +8,7 @@ Docker container for Transmission Daemon.
 
 ### Running the container
 
-    docker run -d -e RPC_USER=[USERNAME] -e RPC_PASS=[PASSWORD] -p 9091:9091 -p 51413:51413/udp -v /local/downloads:/srv/downloads --name transmission phlak/transmission
+    docker run -d -e RPC_USER=[USERNAME] -e RPC_PASS=[PASSWORD] -p 9091:9091 -p 51413:51413/udp -v /local/downloads:/srv/downloads --name transmission-daemon phlak/transmission
 
 **NOTE:** Replace `[USERNAME]` and `[PASSWORD]` with the username and password you'd like to set for
 accessing the web interface. Default username/password is `transmission`/`transmission`.
@@ -18,6 +18,20 @@ accessing the web interface. Default username/password is `transmission`/`transm
 
 `-v /local/watchdir:/srv/watchdir` - Map a directory (i.e. /local/watchdir) on the host OS that
                                      Transmission will monitor for .torrent files
+
+
+### Running the container over an OpenVPN connection
+
+Create an OpenVPN client configuration file named `openvpn.conf` in a directory anywhere on your
+host system. You should also place your client certs/keys in this directory. Then run the OpenVPN
+container and map your local OpenVPN directory to the container volume:
+
+    docker run -d -v /local/dir:/etc/openvpn -p 9091:9091 --privileged --restart=always --name tranmission-vpn phlak/openvpn
+
+Once your OpenVPN container is running, start the Transmission Daemon container with a shared
+network stack:
+
+    docker run -d -e RPC_USER=[USERNAME] -e RPC_PASS=[PASSWORD] -v /local/downloads:/srv/downloads --net container:tranmission-vpn --name transmission-daemon phlak/transmission
 
 
 -----
