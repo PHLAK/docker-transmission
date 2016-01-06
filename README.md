@@ -65,6 +65,16 @@ Here's an example for the `America/Phoenix` timezone:
                                      Transmission will monitor for .torrent files
 
 
+### Troubleshooting
+
+When running a client container, if you are having trouble making a connection and `docker logs`
+shows `Initialization Sequence Completed` without indicatiing any problems try manually setting your
+container's DNS servers by adding `--dns 8.8.8.8 --dns 8.8.4.4` to your run command. Once your
+container is running check you DNS name servers with:
+
+    docker exec transmission-vpn cat /etc/resolv.conf
+
+
 -----
 
 **Copyright (c) 2015 Chris Kankewicz <Chris@ChrisKankiewicz.com>**
