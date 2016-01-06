@@ -4,7 +4,8 @@ MAINTAINER Chris Kankiewicz <Chris@ChrisKankiewicz.com>
 # Create config directories
 ENV CONFIG_DIR    /srv/transmission-daemon
 ENV BLOCKLIST_DIR ${CONFIG_DIR}/blocklists
-RUN mkdir -pv ${CONFIG_DIR} ${BLOCKLIST_DIR}
+ENV SCRIPTS_DIR   /srv/scripts
+RUN mkdir -pv ${CONFIG_DIR} ${BLOCKLIST_DIR} ${SCRIPTS_DIR}
 
 # Set download and watch directories
 ENV DOWNLOAD_DIR   /srv/downloads
@@ -13,6 +14,10 @@ ENV WATCH_DIR      /srv/watchdir
 
 # Add transmission-daemon settings file
 COPY files/settings.json ${CONFIG_DIR}/settings.json
+
+# Add timezone script
+COPY files/timezone ${SCRIPTS_DIR}/timezone
+RUN chmod +x ${SCRIPTS_DIR}/timezone
 
 # Set RPC variables
 ENV RPC_USER transmission

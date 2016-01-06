@@ -44,6 +44,17 @@ create the data-only contaner first and be sure to run the daemon container with
 `--volumes-from` parameter as above.
 
 
+##### Set the timezone
+
+In order for alternative speeds schedules to work you may need to set the timezone of your
+container. You can do this by [lookin up your timezone](https://goo.gl/uy1J6q) and passing the value
+ of the `TZ` column to the set timezone script in your running container.
+
+Here's an example for the `America/Phoenix` timezone:
+
+    docker exec transmission-daemon /srv/scripts/timezone America/Phoenix
+
+
 ##### Optional Arguments
 
 `-e RPC_USER=[USERNAME]` - Set the RPC web interface username (Default: transmission)
