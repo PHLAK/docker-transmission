@@ -5,7 +5,10 @@ Docker container for Transmission Daemon.
 
 [![](https://badge.imagelayers.io/phlak/transmission:latest.svg)](https://imagelayers.io/?images=phlak/transmission:latest 'Get your own badge on imagelayers.io')
 
+
 ### Running the container
+
+The most basic command to get a running container (see below for advanced configurations):
 
     docker run -d -v /local/downloads:/srv/downloads -p 9091:9091 -p 51413:51413/udp --name transmission-daemon phlak/transmission
 
@@ -13,24 +16,62 @@ Docker container for Transmission Daemon.
 this can be overridden with optional environment variabe arguments (see below).
 
 
-### [RECOMMENDED] Running with a data-only container
+##### Optional arguments
 
-In order to persist configuration data after deleting a container you may create a data-only
-container before running the container.
+`-e RPC_USER=[USERNAME]` - Set the RPC web interface username (Default: transmission)
+
+`-e RPC_PASS=[PASSWORD]` - Set the RPC web interface password (Default: transmission)
+
+`-v /local/watchdir:/srv/watchdir` - Map a directory (i.e. /local/watchdir) on the host OS that
+                                     Transmission will monitor for .torrent files
+
+`--restart=always` - Always restart the container regardless of the exit status. See the Docker
+                     [restart policies](https://goo.gl/OI87rA) for additional details.
+
+
+##### Modifying Transmission Daemon settings
+
+In order to modify the Transmission Daemon settings stop the running container then modify the
+`settings.json` file by connecting to the container via an interactive, disposable container:
+
+    docker stop transmission-daemon
+    docker run -it --rm --volumes-from transmission-daemon alpine vi /etc/transmission-daemon/settings.json
+
+**NOTE:** If you are running with a data-only container, target the data-only contiainer (i.e.
+`transmission-data`) instead of the daemon container.
+
+
+##### Seting the timezone
+
+In order for alternative speed schedules to work you may need to set the timezone of your container.
+You can do this by [lookin up your timezone](https://goo.gl/uy1J6q) and passing the value of the
+`TZ` column to the set timezone script in your running container.
+
+Here's an example for the `America/Phoenix` timezone:
+
+    docker exec transmission-daemon /srv/scripts/timezone America/Phoenix
+
+
+-----
+
+##### Running with a data-only container (recommended)
+
+In order to persist configuration data when upgrading your running daemon container you may create a
+data-only container to hold this configuration data. This is _highly_ recommended.
 
     docker create --name transmission-data phlak/transmission echo "Data-only container for transmission-daemon"
 
-After the data-only container has been created run the Transmission Daemon container with mounted
-volumes from the data-only container:
+After the data-only container has been created run the daemon container with shared volumes volumes
+from the data-only container:
 
     docker run -d -v /local/downloads:/srv/downloads -p 9091:9091 -p 51413:51413/udp --volumes-from transmission-data --name transmission-daemon phlak/transmission
 
 
-### [ADVANCED] Running the container over an OpenVPN tunnel
+##### Running the container over an OpenVPN tunnel
 
 Place your OpenVPN client configuration file in a directory anywhere on your host system with the
-name `openvpn.conf`. You should also place your client certs/keys in this directory. Then run the
-OpenVPN container and map your local OpenVPN directory to the container volume:
+name `openvpn.conf`. You should also place your client certs/keys in this directory if required.
+Then run the OpenVPN container and map your local OpenVPN directory to the container volume:
 
     docker run -d -v /local/dir:/etc/openvpn -p 9091:9091 --privileged --restart=always --name tranmission-vpn phlak/openvpn
 
@@ -42,27 +83,6 @@ network stack:
 **NOTE:** You can (should) combine this method with the data-only container method above. Just
 create the data-only contaner first and be sure to run the daemon container with the
 `--volumes-from` parameter as above.
-
-
-##### Set the timezone
-
-In order for alternative speeds schedules to work you may need to set the timezone of your
-container. You can do this by [lookin up your timezone](https://goo.gl/uy1J6q) and passing the value
- of the `TZ` column to the set timezone script in your running container.
-
-Here's an example for the `America/Phoenix` timezone:
-
-    docker exec transmission-daemon /srv/scripts/timezone America/Phoenix
-
-
-##### Optional Arguments
-
-`-e RPC_USER=[USERNAME]` - Set the RPC web interface username (Default: transmission)
-
-`-e RPC_PASS=[PASSWORD]` - Set the RPC web interface password (Default: transmission)
-
-`-v /local/watchdir:/srv/watchdir` - Map a directory (i.e. /local/watchdir) on the host OS that
-                                     Transmission will monitor for .torrent files
 
 
 -----
