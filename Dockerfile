@@ -1,47 +1,41 @@
 FROM alpine:3.3
 MAINTAINER Chris Kankiewicz <Chris@ChrisKankiewicz.com>
 
-# Create config directories
-ENV CONFIG_DIR    /srv/transmission-daemon
-ENV BLOCKLIST_DIR ${CONFIG_DIR}/blocklists
-ENV SCRIPTS_DIR   /srv/scripts
-RUN mkdir -pv ${CONFIG_DIR} ${BLOCKLIST_DIR} ${SCRIPTS_DIR}
+# Create directories
+RUN mkdir -pv /etc/transmission-daemon/blocklists /srv/downloads/.incomplete /srv/watchdir
 
-# Set download and watch directories
-ENV DOWNLOAD_DIR   /srv/downloads
-ENV INCOMPLETE_DIR ${DOWNLOAD_DIR}/.incomplete
-ENV WATCH_DIR      /srv/watchdir
+# Add settings file
+COPY files/settings.json /etc/transmission-daemon/settings.json
 
-# Add transmission-daemon settings file
-COPY files/settings.json ${CONFIG_DIR}/settings.json
-
-# Add timezone script
-COPY files/timezone ${SCRIPTS_DIR}/timezone
-RUN chmod +x ${SCRIPTS_DIR}/timezone
-
-# Set RPC variables
+# Define RPC variables
 ENV RPC_USER transmission
 ENV RPC_PASS transmission
+
+# Set RPC user/pass in settings file
+RUN sed -i "s|\"rpc-username\": \".*\",|\"rpc-username\": \"${RPC_USER}\",|g" /etc/transmission-daemon/settings.json
+RUN sed -i "s|\"rpc-password\": \".*\",|\"rpc-password\": \"${RPC_PASS}\",|g" /etc/transmission-daemon/settings.json
+
+# Add timezone script
+COPY files/timezone /bin/timezone
+RUN chmod +x /bin/timezone
 
 # Install packages and dependencies
 RUN apk add --update transmission-cli transmission-daemon wget \
     && rm -rf /var/cache/apk/*
 
 # Install initial blocklist
-ENV BLOCKLIST_URL http://list.iblocklist.com/?list=bt_level1&fileformat=p2p&archiveformat=gz
-RUN wget -qO- "${BLOCKLIST_URL}" | gunzip > ${BLOCKLIST_DIR}/bt_level1
+RUN BLOCKLIST_URL="http://list.iblocklist.com/?list=bt_level1&fileformat=p2p&archiveformat=gz" \
+    wget -qO- "${BLOCKLIST_URL}" | gunzip > /etc/transmission-daemon/blocklists/bt_level1
 
 # Create bolcklist-update cronjob
 COPY files/blocklist-update /etc/periodic/hourly/blocklist-update
 RUN chmod +x /etc/periodic/hourly/blocklist-update
 
 # Add docker volumes
-VOLUME ${CONFIG_DIR}
+VOLUME /etc/transmission-daemon
 
 # Expose ports
 EXPOSE 9091 51413
 
 # Run transmission-daemon as default command
-CMD transmission-daemon --foreground --log-info --config-dir ${CONFIG_DIR} --lpd \
-    --download-dir ${DOWNLOAD_DIR} --incomplete-dir ${INCOMPLETE_DIR} --watch-dir ${WATCH_DIR} \
-    --auth --username ${RPC_USER} --password ${RPC_PASS}
+CMD ["transmission-daemon", "--foreground", "--log-info", "--config-dir", "/etc/transmission-daemon"]

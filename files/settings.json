@@ -2,8 +2,17 @@
     "blocklist-enabled": true,
     "blocklist-url": "http://list.iblocklist.com/?list=bt_level1&fileformat=p2p&archiveformat=gz",
     "cache-size-mb": 16,
+    "download-dir": "/srv/downloads",
     "download-queue-enabled": false,
+    "incomplete-dir": "/srv/downloads/.incomplete",
+    "incomplete-dir-enabled": true,
+    "lpd-enabled": true,
+    "rpc-authentication-required": true,
+    "rpc-password": "transmission",
+    "rpc-username": "transmission",
     "rpc-whitelist": "0.0.0.0",
     "rpc-whitelist-enabled": false,
-    "trash-original-torrent-files": true
+    "trash-original-torrent-files": true,
+    "watch-dir": "/srv/watchdir",
+    "watch-dir-enabled": true
 }
