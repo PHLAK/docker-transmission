@@ -27,9 +27,6 @@ RUN apk add --update transmission-cli transmission-daemon wget \
 ENV BLOCKLIST_URL="http://list.iblocklist.com/?list=bt_level1&fileformat=p2p&archiveformat=gz"
 RUN wget -qO- ${BLOCKLIST_URL} | gunzip > /etc/transmission-daemon/blocklists/bt_level1
 
-# Set blocklist URL in settings file
-RUN sed -i "s|\"blocklist-url\": \".*\",|\"blocklist-url\": \"${BLOCKLIST_URL}\",|g" /etc/transmission-daemon/settings.json
-
 # Create bolcklist-update cronjob
 COPY files/blocklist-update /etc/periodic/hourly/blocklist-update
 RUN chmod +x /etc/periodic/hourly/blocklist-update
