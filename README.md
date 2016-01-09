@@ -18,10 +18,6 @@ this can be overridden with optional environment variabe arguments (see below).
 
 ##### Optional arguments
 
-`-e RPC_USER=[USERNAME]` - Set the RPC web interface username (Default: transmission)
-
-`-e RPC_PASS=[PASSWORD]` - Set the RPC web interface password (Default: transmission)
-
 `-v /local/watchdir:/srv/watchdir` - Map a directory (i.e. /local/watchdir) on the host OS that
                                      Transmission will monitor for .torrent files
 

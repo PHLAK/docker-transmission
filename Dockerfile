@@ -7,14 +7,6 @@ RUN mkdir -pv /etc/transmission-daemon/blocklists /srv/downloads/.incomplete /sr
 # Add settings file
 COPY files/settings.json /etc/transmission-daemon/settings.json
 
-# Define RPC variables
-ENV RPC_USER transmission
-ENV RPC_PASS transmission
-
-# Set RPC user/pass in settings file
-RUN sed -i "s|\"rpc-username\": \".*\",|\"rpc-username\": \"${RPC_USER}\",|g" /etc/transmission-daemon/settings.json
-RUN sed -i "s|\"rpc-password\": \".*\",|\"rpc-password\": \"${RPC_PASS}\",|g" /etc/transmission-daemon/settings.json
-
 # Add timezone script
 COPY files/timezone /bin/timezone
 RUN chmod +x /bin/timezone
