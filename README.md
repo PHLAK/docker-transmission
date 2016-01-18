@@ -21,7 +21,7 @@ this can be overridden with optional environment variabe arguments (see below).
 `-v /local/watchdir:/srv/watchdir` - Map a directory (i.e. /local/watchdir) on the host OS that
                                      Transmission will monitor for .torrent files
 
-`--restart=always` - Always restart the container regardless of the exit status. See the Docker
+`--restart always` - Always restart the container regardless of the exit status. See the Docker
                      [restart policies](https://goo.gl/OI87rA) for additional details.
 
 
@@ -45,7 +45,7 @@ You can do this by [lookin up your timezone](https://goo.gl/uy1J6q) and passing 
 
 Here's an example for the `America/Phoenix` timezone:
 
-    docker exec transmission-daemon /srv/scripts/timezone America/Phoenix
+    docker exec transmission-daemon timezone America/Phoenix
 
 
 -----
