@@ -8,8 +8,8 @@ RUN mkdir -pv /etc/transmission-daemon/blocklists /srv/downloads/.incomplete /sr
 COPY files/settings.json /etc/transmission-daemon/settings.json
 
 # Add timezone script
-COPY files/timezone /bin/timezone
-RUN chmod +x /bin/timezone
+COPY files/timezone /usr/local/bin/timezone
+RUN chmod +x /usr/local/bin/timezone
 
 # Install packages and dependencies
 RUN apk add --update transmission-cli transmission-daemon wget \
