@@ -26,7 +26,7 @@ cleanup() {
 main() {
 
     if [ -z "${1}" ]; then
-        echo "ERROR: Must supply timezone. See: https://goo.gl/pb8dJP"; exit 1
+        echo "ERROR: Must supply timezone. See: https://goo.gl/uy1J6q"; exit 1
     fi
 
     # Install tzdata and set timezone
