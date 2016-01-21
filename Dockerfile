@@ -12,12 +12,12 @@ COPY files/timezone /usr/local/bin/timezone
 RUN chmod +x /usr/local/bin/timezone
 
 # Install packages and dependencies
-RUN apk add --update transmission-cli transmission-daemon wget \
+RUN apk add --update transmission-cli transmission-daemon \
     && rm -rf /var/cache/apk/*
 
 # Install initial blocklist
 ENV BLOCKLIST_URL="http://list.iblocklist.com/?list=bt_level1&fileformat=p2p&archiveformat=gz"
-RUN wget -qO- ${BLOCKLIST_URL} | gunzip > /etc/transmission-daemon/blocklists/bt_level1
+RUN curl -sL ${BLOCKLIST_URL} | gunzip > /etc/transmission-daemon/blocklists/bt_level1
 
 # Create bolcklist-update cronjob
 COPY files/blocklist-update /etc/periodic/hourly/blocklist-update
