@@ -1,7 +1,7 @@
 docker-transmission
 ===================
 
-Docker container for Transmission Daemon.
+Docker image for Transmission Daemon.
 
 [![](https://badge.imagelayers.io/phlak/transmission:latest.svg)](https://imagelayers.io/?images=phlak/transmission:latest 'Get your own badge on imagelayers.io')
 
@@ -40,8 +40,8 @@ In order to modify the Transmission Daemon settings stop the running container t
 ##### Seting the timezone
 
 In order for alternative speed schedules to work you may need to set the timezone of your container.
-You can do this by [lookin up your timezone](https://goo.gl/uy1J6q) and passing the value of the
-`TZ` column to the set timezone script in your running container.
+You can do this by [lookin up your timezone](https://goo.gl/uy1J6q) and passing the (case sensitive)
+value of the `TZ` column to the set timezone script in your running container.
 
 Here's an example for the `America/Phoenix` timezone:
 
@@ -83,7 +83,7 @@ create the data-only contaner first and be sure to run the daemon container with
 
 -----
 
-**Copyright (c) 2015 Chris Kankewicz <Chris@ChrisKankiewicz.com>**
+**Copyright (c) 2016 Chris Kankewicz <Chris@ChrisKankiewicz.com>**
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
