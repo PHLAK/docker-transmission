@@ -50,17 +50,16 @@ Here's an example for the `America/Phoenix` timezone:
 
 -----
 
-##### Running with a data-only container (recommended)
+##### Running with a named data volume (recommended)
 
 In order to persist configuration data when upgrading your running daemon container you may create a
-data-only container to hold this configuration data. This is _highly_ recommended.
+named volume to hold this configuration data. This is _highly_ recommended.
 
-    docker create --name transmission-data phlak/transmission echo "Data-only container for transmission-daemon"
+    docker volume create --name transmission-data
 
-After the data-only container has been created run the daemon container with shared volumes volumes
-from the data-only container:
+After the volume has been created run the daemon container with the volume mounted:
 
-    docker run -d -v /local/downloads:/srv/downloads -p 9091:9091 -p 51413:51413/udp --volumes-from transmission-data --name transmission-daemon phlak/transmission
+    docker run -d -v transmission-data:/etc/transmission-data -v /local/downloads:/srv/downloads -p 9091:9091 -p 51413:51413/udp --name transmission-daemon phlak/transmission
 
 
 ##### Running the container over an OpenVPN tunnel
@@ -76,9 +75,9 @@ network stack:
 
     docker run -d -v /local/downloads:/srv/downloads --net container:tranmission-vpn --name transmission-daemon phlak/transmission
 
-**NOTE:** You can (should) combine this method with the data-only container method above. Just
-create the data-only contaner first and be sure to run the daemon container with the
-`--volumes-from` parameter as above.
+**NOTE:** You can (should) combine this method with the named data volume method above. Just create
+the named volume first and be sure to run the daemon container with the `--volumes-from` parameter
+as above.
 
 
 -----
