@@ -9,7 +9,7 @@ Docker image for Transmission Daemon.
 ### Running the container
 
 In order to persist configuration data when upgrading your daemon container you should create a
-named data volume. This is no required but is _highly_ recommended.
+named data volume. This is not required but is _highly_ recommended.
 
     docker volume create --name transmission-data
 
