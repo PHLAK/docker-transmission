@@ -62,7 +62,7 @@ Then run the OpenVPN container and map your local OpenVPN directory to the conta
 Once your OpenVPN container is running, start the Transmission Daemon container with a shared
 network stack:
 
-    docker run -d --net container:tranmission-vpn -v transmission-data:/etc/transmission-data -v /local/downloads:/srv/downloads -p 9091:9091 -p 51413:51413/udp --name transmission-daemon phlak/transmission
+    docker run -d --net container:tranmission-vpn -v transmission-data:/etc/transmission-data -v /local/downloads:/srv/downloads --name transmission-daemon phlak/transmission
 
 
 -----
