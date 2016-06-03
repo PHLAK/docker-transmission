@@ -1,8 +1,8 @@
-FROM alpine:3.3
+FROM alpine:3.4
 MAINTAINER Chris Kankiewicz <Chris@ChrisKankiewicz.com>
 
 # Define transmission-daemon version
-ENV TD_VERSION 2.84-r1
+ENV TD_VERSION 2.92-r1
 
 # Create directories
 RUN mkdir -pv /etc/transmission-daemon/blocklists /srv/downloads/.incomplete /srv/watchdir
@@ -15,7 +15,7 @@ COPY files/timezone /usr/local/bin/timezone
 RUN chmod +x /usr/local/bin/timezone
 
 # Install packages and dependencies
-RUN apk add --update transmission-cli transmission-daemon=${TD_VERSION} \
+RUN apk add --update curl transmission-cli transmission-daemon=${TD_VERSION} \
     && rm -rf /var/cache/apk/*
 
 # Install initial blocklist
