@@ -3,7 +3,7 @@ docker-transmission
 
 Docker image for Transmission Daemon.
 
-[![](https://badge.imagelayers.io/phlak/transmission:latest.svg)](https://imagelayers.io/?images=phlak/transmission:latest 'Get your own badge on imagelayers.io')
+[![](https://images.microbadger.com/badges/image/phlak/transmission.svg)](http://microbadger.com/#/images/phlak/transmission "Get your own image badge on microbadger.com")
 
 Running the Container
 ---------------------
