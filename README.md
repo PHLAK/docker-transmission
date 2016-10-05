@@ -5,8 +5,8 @@ Docker image for Transmission Daemon.
 
 [![](https://badge.imagelayers.io/phlak/transmission:latest.svg)](https://imagelayers.io/?images=phlak/transmission:latest 'Get your own badge on imagelayers.io')
 
-
-### Running the container
+Running the Container
+---------------------
 
 In order to persist configuration data when upgrading your daemon container you should create a
 named data volume. This is not required but is _highly_ recommended.
@@ -19,8 +19,7 @@ After the data volume has been created run the daemon container with the named d
 
 **NOTE:** The default RPC web interface username/password is `transmission`/`transmission`.
 
-
-##### Optional arguments
+#### Optional arguments
 
 `-v /local/watchdir:/srv/watchdir` - Map a directory (i.e. /local/watchdir) on the host OS that
                                      Transmission will monitor for .torrent files
@@ -28,8 +27,8 @@ After the data volume has been created run the daemon container with the named d
 `--restart always` - Always restart the container regardless of the exit status. See the Docker
                      [restart policies](https://goo.gl/OI87rA) for additional details.
 
-
-##### Modifying Transmission Daemon settings
+Modifying Transmission Daemon settings
+--------------------------------------
 
 In order to modify the Transmission Daemon settings stop the running container then modify the
 `settings.json` file by connecting to the container via an interactive, disposable container:
@@ -37,8 +36,8 @@ In order to modify the Transmission Daemon settings stop the running container t
     docker stop transmission-daemon
     docker run -it --rm --volumes-from transmission-daemon alpine vi /etc/transmission-daemon/settings.json
 
-
-##### Seting the timezone
+Seting the Timezone
+-------------------
 
 In order for alternative speed schedules to work you may need to set the timezone of your container.
 You can do this by [lookin up your timezone](https://goo.gl/uy1J6q) and passing the (case sensitive)
@@ -51,7 +50,8 @@ Here's an example for the `America/Phoenix` timezone:
 
 -----
 
-##### Running the container over an OpenVPN tunnel
+Running the Container Over an OpenVPN Tunnel
+--------------------------------------------
 
 Place your OpenVPN client configuration file in a directory anywhere on your host system with the
 name `openvpn.conf`. You should also place your client certs/keys in this directory if required.
@@ -64,25 +64,12 @@ network stack:
 
     docker run -d --net container:tranmission-vpn -v transmission-data:/etc/transmission-data -v /local/downloads:/srv/downloads --name transmission-daemon phlak/transmission
 
+Troubleshooting
+---------------
 
------
+Please report bugs to the [GitHub Issue Tracker](https://github.com/PHLAK/docker-transmission/issues).
 
-**Copyright (c) 2016 Chris Kankewicz <Chris@ChrisKankiewicz.com>**
+Copyright
+---------
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+This project is liscensed under the [MIT License](https://github.com/PHLAK/docker-transmission/blob/master/LICENSE).
