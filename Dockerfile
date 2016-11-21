@@ -10,12 +10,8 @@ RUN mkdir -pv /etc/transmission-daemon/blocklists /srv/downloads/.incomplete /sr
 # Add settings file
 COPY files/settings.json /etc/transmission-daemon/settings.json
 
-# Add timezone script
-COPY files/timezone /usr/local/bin/timezone
-RUN chmod +x /usr/local/bin/timezone
-
 # Install packages and dependencies
-RUN apk add --update curl transmission-cli transmission-daemon=${TD_VERSION} \
+RUN apk add --update curl transmission-cli transmission-daemon=${TD_VERSION} tzdata \
     && rm -rf /var/cache/apk/*
 
 # Install initial blocklist

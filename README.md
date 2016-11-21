@@ -24,8 +24,14 @@ After the data volume has been created run the daemon container with the named d
 `-v /local/watchdir:/srv/watchdir` - Map a directory (i.e. /local/watchdir) on the host OS that
                                      Transmission will monitor for .torrent files
 
-`--restart always` - Always restart the container regardless of the exit status. See the Docker
-                     [restart policies](https://goo.gl/OI87rA) for additional details.
+`-e TZ=America/Phoenix` - Set the timezone for your server. You can find your timezone in this
+                          [list of timezones](https://goo.gl/uy1J6q). Use the (case sensitive)
+                          value from the `TZ` column. If left unset, timezone will be UTC.
+
+`--restart unless-stopped` - Always restart the container regardless of the exit status, but do not
+                             start it on daemon startup if the container has been put to a stopped
+                             state before. See the Docker [restart policies](https://goo.gl/Y0dlDH)
+                             for additional details.
 
 Modifying Transmission Daemon settings
 --------------------------------------
@@ -36,17 +42,8 @@ In order to modify the Transmission Daemon settings stop the running container t
     docker stop transmission-daemon
     docker run -it --rm --volumes-from transmission-daemon alpine vi /etc/transmission-daemon/settings.json
 
-Seting the Timezone
--------------------
-
-In order for alternative speed schedules to work you may need to set the timezone of your container.
-You can do this by [lookin up your timezone](https://goo.gl/uy1J6q) and passing the (case sensitive)
-value of the `TZ` column to the set timezone script in your running container.
-
-Here's an example for the `America/Phoenix` timezone:
-
-    docker exec transmission-daemon timezone America/Phoenix
-
+**NOTE:** In order for alternative speed schedules to work properly you may need to set the
+timezone of your container. See the optional argument for setting the timezone above.
 
 -----
 
