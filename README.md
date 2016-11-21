@@ -54,7 +54,7 @@ Place your OpenVPN client configuration file in a directory anywhere on your hos
 name `openvpn.conf`. You should also place your client certs/keys in this directory if required.
 Then run the OpenVPN container and map your local OpenVPN directory to the container volume:
 
-    docker run -d -v /local/dir:/etc/openvpn -p 9091:9091 --privileged --restart=always --name transmission-vpn phlak/openvpn
+    docker run -d -v /local/dir:/etc/openvpn -p 9091:9091 --privileged --restart unless-stopped --name transmission-vpn phlak/openvpn
 
 Once your OpenVPN container is running, start the Transmission Daemon container with a shared
 network stack:
