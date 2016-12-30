@@ -2,7 +2,7 @@ FROM alpine:3.5
 MAINTAINER Chris Kankiewicz <Chris@ChrisKankiewicz.com>
 
 # Define transmission-daemon version
-ENV TD_VERSION 2.92-r3
+ARG TD_VERSION=2.92-r3
 
 # Create directories
 RUN mkdir -pv /etc/transmission-daemon/blocklists /srv/downloads/.incomplete /srv/watchdir
@@ -15,7 +15,7 @@ RUN apk add --update curl transmission-cli transmission-daemon=${TD_VERSION} tzd
     && rm -rf /var/cache/apk/*
 
 # Install initial blocklist
-ENV BLOCKLIST_URL="http://list.iblocklist.com/?list=bt_level1&fileformat=p2p&archiveformat=gz"
+ARG BLOCKLIST_URL="http://list.iblocklist.com/?list=bt_level1&fileformat=p2p&archiveformat=gz"
 RUN curl -sL ${BLOCKLIST_URL} | gunzip > /etc/transmission-daemon/blocklists/bt_level1
 
 # Create bolcklist-update cronjob
