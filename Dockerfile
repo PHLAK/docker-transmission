@@ -1,8 +1,8 @@
-FROM alpine:3.5
+FROM alpine:3.6
 MAINTAINER Chris Kankiewicz <Chris@ChrisKankiewicz.com>
 
 # Define transmission-daemon version
-ARG TD_VERSION=2.92-r3
+ARG TD_VERSION=2.92-r5
 
 # Create directories
 RUN mkdir -pv /etc/transmission-daemon/blocklists /srv/downloads/.incomplete /srv/watchdir
