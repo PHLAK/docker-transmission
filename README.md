@@ -40,7 +40,7 @@ In order to modify the Transmission Daemon settings stop the running container t
 `settings.json` file by connecting to the container via an interactive, disposable container:
 
     docker stop transmission-daemon
-    docker run -it --rm --volumes-from transmission-daemon alpine vi /etc/transmission-daemon/settings.json
+    docker run -it --rm --volumes-from transmission-daemon phlak/transmission vi /etc/transmission-daemon/settings.json
 
 **NOTE:** In order for alternative speed schedules to work properly you may need to set the
 timezone of your container. See the optional argument for setting the timezone above.
