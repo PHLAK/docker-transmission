@@ -13,6 +13,9 @@ HEALTHCHECK --timeout=5s CMD transmission-remote --authenv --session-info
 # Create directories
 RUN mkdir -pv /etc/transmission-daemon/blocklists /vol/downloads/.incomplete /srv/watchdir
 
+# Create non-root user
+RUN adduser -DHs /sbin/nologin transmission
+
 # Add settings file
 COPY files/settings.json /etc/transmission-daemon/settings.json
 
@@ -20,16 +23,20 @@ COPY files/settings.json /etc/transmission-daemon/settings.json
 RUN apk add --update curl transmission-cli transmission-daemon=${TD_VERSION} tzdata \
     && rm -rf /var/cache/apk/*
 
+# Install initial blocklist
+ARG BLOCKLIST_URL="http://list.iblocklist.com/?list=bt_level1&fileformat=p2p&archiveformat=gz"
+RUN curl -sL ${BLOCKLIST_URL} | gunzip > /etc/transmission-daemon/blocklists/bt_level1 \
+    && chown -R transmission:transmission /etc/transmission-daemon
+
 # Create bolcklist-update cronjob
 COPY files/blocklist-update /etc/periodic/hourly/blocklist-update
 RUN chmod +x /etc/periodic/hourly/blocklist-update
 
-# Install initial blocklist
-ARG BLOCKLIST_URL="http://list.iblocklist.com/?list=bt_level1&fileformat=p2p&archiveformat=gz"
-RUN curl -sL ${BLOCKLIST_URL} | gunzip > /etc/transmission-daemon/blocklists/bt_level1
-
 # Expose ports
 EXPOSE 9091 51413
+
+# Set running user
+USER transmission
 
 # Add docker volumes
 VOLUME /etc/transmission-daemon
