@@ -7,6 +7,9 @@ ARG TD_VERSION=2.94-r0
 # Define the authentication user and password
 ENV TR_AUTH="transmission:transmission"
 
+# Define a healthcheck
+HEALTHCHECK --timeout=5s CMD transmission-remote --authenv --session-info
+
 # Create directories
 RUN mkdir -pv /etc/transmission-daemon/blocklists /srv/downloads/.incomplete /srv/watchdir
 
