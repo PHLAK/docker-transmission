@@ -20,19 +20,19 @@ COPY files/settings.json /etc/transmission-daemon/settings.json
 RUN apk add --update curl transmission-cli transmission-daemon=${TD_VERSION} tzdata \
     && rm -rf /var/cache/apk/*
 
-# Install initial blocklist
-ARG BLOCKLIST_URL="http://list.iblocklist.com/?list=bt_level1&fileformat=p2p&archiveformat=gz"
-RUN curl -sL ${BLOCKLIST_URL} | gunzip > /etc/transmission-daemon/blocklists/bt_level1
-
 # Create bolcklist-update cronjob
 COPY files/blocklist-update /etc/periodic/hourly/blocklist-update
 RUN chmod +x /etc/periodic/hourly/blocklist-update
 
-# Add docker volumes
-VOLUME /etc/transmission-daemon
+# Install initial blocklist
+ARG BLOCKLIST_URL="http://list.iblocklist.com/?list=bt_level1&fileformat=p2p&archiveformat=gz"
+RUN curl -sL ${BLOCKLIST_URL} | gunzip > /etc/transmission-daemon/blocklists/bt_level1
 
 # Expose ports
 EXPOSE 9091 51413
+
+# Add docker volumes
+VOLUME /etc/transmission-daemon
 
 # Run transmission-daemon as default command
 CMD transmission-daemon --foreground --log-info --config-dir /etc/transmission-daemon \
