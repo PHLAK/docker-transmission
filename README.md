@@ -15,7 +15,7 @@ named data volume. This is not required but is _highly_ recommended.
 
 After the data volume has been created run the daemon container with the named data volume:
 
-    docker run -d -v transmission-data:/etc/transmission-data -v /local/downloads:/srv/downloads -p 9091:9091 -p 51413:51413/udp --name transmission-daemon phlak/transmission
+    docker run -d -v transmission-data:/etc/transmission-data -v /local/downloads:/vol/downloads -p 9091:9091 -p 51413:51413/udp --name transmission-daemon phlak/transmission
 
 **NOTE:** The default RPC web interface username/password is `transmission`/`transmission`.
 
@@ -61,7 +61,7 @@ Then run the OpenVPN container and map your local OpenVPN directory to the conta
 Once your OpenVPN container is running, start the Transmission Daemon container with a shared
 network stack:
 
-    docker run -d --net container:tranmission-vpn -v transmission-data:/etc/transmission-data -v /local/downloads:/srv/downloads --name transmission-daemon phlak/transmission
+    docker run -d --net container:tranmission-vpn -v transmission-data:/etc/transmission-data -v /local/downloads:/vol/downloads --name transmission-daemon phlak/transmission
 
 Troubleshooting
 ---------------

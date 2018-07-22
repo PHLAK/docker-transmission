@@ -11,7 +11,7 @@ ENV TR_AUTH="transmission:transmission"
 HEALTHCHECK --timeout=5s CMD transmission-remote --authenv --session-info
 
 # Create directories
-RUN mkdir -pv /etc/transmission-daemon/blocklists /srv/downloads/.incomplete /srv/watchdir
+RUN mkdir -pv /etc/transmission-daemon/blocklists /vol/downloads/.incomplete /srv/watchdir
 
 # Add settings file
 COPY files/settings.json /etc/transmission-daemon/settings.json
@@ -36,5 +36,5 @@ VOLUME /etc/transmission-daemon
 
 # Run transmission-daemon as default command
 CMD transmission-daemon --foreground --log-info --config-dir /etc/transmission-daemon \
-    --download-dir /srv/downloads --incomplete-dir /srv/downloads/.incomplete \
+    --download-dir /vol/downloads --incomplete-dir /vol/downloads/.incomplete \
     --watch-dir /srv/watchdir --username ${TR_AUTH%:*} --password ${TR_AUTH#*:}
