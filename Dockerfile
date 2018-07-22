@@ -44,4 +44,4 @@ VOLUME /etc/transmission-daemon
 # Run transmission-daemon as default command
 CMD transmission-daemon --foreground --log-info --config-dir /etc/transmission-daemon \
     --download-dir /vol/downloads --incomplete-dir /vol/downloads/.incomplete \
-    --watch-dir /srv/watchdir --username ${TR_AUTH%:*} --password ${TR_AUTH#*:}
+    --watch-dir /vol/watchdir --username ${TR_AUTH%:*} --password ${TR_AUTH#*:}
