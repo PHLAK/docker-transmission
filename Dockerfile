@@ -32,4 +32,6 @@ VOLUME /etc/transmission-daemon
 EXPOSE 9091 51413
 
 # Run transmission-daemon as default command
-CMD ["transmission-daemon", "--foreground", "--log-info", "--config-dir", "/etc/transmission-daemon"]
+CMD transmission-daemon --foreground --log-info --config-dir /etc/transmission-daemon \
+    --download-dir /srv/downloads --incomplete-dir /srv/downloads/.incomplete \
+    --watch-dir /srv/watchdir --username ${TR_AUTH%:*} --password ${TR_AUTH#*:}
