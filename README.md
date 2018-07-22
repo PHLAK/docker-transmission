@@ -28,6 +28,8 @@ After the data volume has been created run the daemon container with the named d
                           [list of timezones](https://goo.gl/uy1J6q). Use the (case sensitive)
                           value from the `TZ` column. If left unset, timezone will be UTC.
 
+`-e TR_AUTH=username:password` - Set the Transmission authentication username and password.
+
 `--restart unless-stopped` - Always restart the container regardless of the exit status, but do not
                              start it on daemon startup if the container has been put to a stopped
                              state before. See the Docker [restart policies](https://goo.gl/Y0dlDH)

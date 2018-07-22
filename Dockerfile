@@ -4,6 +4,9 @@ MAINTAINER Chris Kankiewicz <Chris@ChrisKankiewicz.com>
 # Define transmission-daemon version
 ARG TD_VERSION=2.94-r0
 
+# Define the authentication user and password
+ENV TR_AUTH="transmission:transmission"
+
 # Create directories
 RUN mkdir -pv /etc/transmission-daemon/blocklists /srv/downloads/.incomplete /srv/watchdir
 
