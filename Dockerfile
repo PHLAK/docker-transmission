@@ -11,7 +11,7 @@ ENV TR_AUTH="transmission:transmission"
 HEALTHCHECK --timeout=5s CMD transmission-remote --authenv --session-info
 
 # Create directories
-RUN mkdir -pv /etc/transmission-daemon/blocklists /vol/downloads/.incomplete /srv/watchdir
+RUN mkdir -pv /etc/transmission-daemon/blocklists /vol/downloads/.incomplete /vol/watchdir
 
 # Create non-root user
 RUN adduser -DHs /sbin/nologin transmission
