@@ -1,8 +1,8 @@
-FROM alpine:3.8
+FROM alpine:3.9
 MAINTAINER Chris Kankiewicz <Chris@ChrisKankiewicz.com>
 
 # Define transmission-daemon version
-ARG TD_VERSION=2.94-r0
+ARG TD_VERSION=2.94-r1
 
 # Define the authentication user and password
 ENV TR_AUTH="transmission:transmission"
