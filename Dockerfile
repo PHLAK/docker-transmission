@@ -1,5 +1,5 @@
 FROM alpine:3.9
-MAINTAINER Chris Kankiewicz <Chris@ChrisKankiewicz.com>
+LABEL maintainer="Chris Kankiewicz <Chris@ChrisKankiewicz.com>"
 
 # Define transmission-daemon version
 ARG TD_VERSION=2.94-r1
