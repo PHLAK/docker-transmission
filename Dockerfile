@@ -2,7 +2,7 @@ FROM alpine:3.10
 LABEL maintainer="Chris Kankiewicz <Chris@ChrisKankiewicz.com>"
 
 # Define transmission-daemon version
-ARG TD_VERSION=2.94-r1
+ARG TD_VERSION=2.94-r2
 
 # Define the authentication user and password
 ENV TR_AUTH="transmission:transmission"
@@ -20,7 +20,7 @@ RUN adduser -DHs /sbin/nologin transmission
 COPY files/settings.json /etc/transmission-daemon/settings.json
 
 # Install packages and dependencies
-RUN apk add --update curl transmission-cli transmission-daemon=${TD_VERSION} tzdata \
+RUN apk add --update curl transmission-cli=${TD_VERSION} transmission-daemon=${TD_VERSION} tzdata \
     && rm -rf /var/cache/apk/*
 
 # Install initial blocklist
