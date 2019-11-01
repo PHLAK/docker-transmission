@@ -123,7 +123,7 @@ Troubleshooting
 
 For general help and support join our [Slack Workspace](https://join.slack.com/t/phlaknet/shared_invite/enQtNzk0ODkwMDA2MDg0LWI4NDAyZGRlMWEyMWNhZmJmZjgzM2Y2YTdhNmZlYzc3OGNjZWU5MDNkMTcwMWQ5OGI5ODFmMjI5OWVkZTliN2M).
 
-Please report bugs to the [GitHub Issue Tracker](https://github.com/PHLAK/Twine/issues).
+Please report bugs to the [GitHub Issue Tracker](https://github.com/PHLAK/docker-transmission/issues).
 
 Copyright
 ---------
