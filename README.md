@@ -25,7 +25,7 @@ Running the Container
 In order to persist configuration data when upgrading your daemon container you should create a
 named data volume. This is not required but is _highly_ recommended.
 
-    docker volume create --name transmission-data
+    docker volume create transmission-data
 
 After the data volume has been created run the daemon container with the named data volume:
 
