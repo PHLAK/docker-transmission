@@ -1,8 +1,8 @@
-FROM alpine:3.10
+FROM alpine:3.11
 LABEL maintainer="Chris Kankiewicz <Chris@ChrisKankiewicz.com>"
 
 # Define transmission-daemon version
-ARG TD_VERSION=2.94-r2
+ARG TD_VERSION=2.94-r3
 
 # Define the authentication user and password
 ENV TR_AUTH="transmission:transmission"
